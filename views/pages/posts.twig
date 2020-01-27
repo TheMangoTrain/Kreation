@@ -1,22 +1,17 @@
-{# File views/pages/posts.twig #}
-
 {% extends 'layouts/base.twig' %}
 {% block content %}
 
-
   <section class="widthFull container">
-
-            <div class="section-inner widthGlobal2">
- <div>
+    <div class="section-inner widthGlobal2">
+      <div>
         {% for post in posts %}
             <div>
                 {% include 'partials/post-tease-card.twig' %}
             </div>
         {% endfor %}
-    </div>
+      </div>
     {% include 'partials/pagination.twig' %}
     </div>
-
   </section>
 
 {% endblock %}

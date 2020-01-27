@@ -1,11 +1,6 @@
-{# File: views/partials/header-home.twig #}
 <header id="page-header" class="widthFull container">
 
-  <div id="page-hero-background">
-
-    <!-- <div class="benday"> </div>-->
-
-  </div>
+  <div id="page-hero-background"> </div>
 
   <section class="page-header-inner widthGlobal" style="z-index: 3;position: relative;">
     {% include 'partials/logo.twig' %}
@@ -268,7 +263,7 @@
 
 
 
-<div id="home-hero-notes" class="hero-notes" style="align-items: center;">
+	<div id="home-hero-notes" class="hero-notes" style="align-items: center;">
 
 		<div style="max-width: 550px">
         <div style="flex: 1; display:flex; align-items: center;">
@@ -304,35 +299,10 @@
 		</div>
       </div>
 
-
-<!--
-      <div id="home-hero-notes" class="hero-notes">
-        <div style="flex: 0 1 300px;">
-          <h2 style="display: inline-block;background-color: white;width: 1.5em;color: #003c5e;margin-bottom: 0.4em;">1</h2>
-          <div>
-            
-I specialize in WordPress and have experience with Vue/React, Node.js/PHP/Go, MySQL and PWA's.
-
-          
-          </div>
-        </div>
-
-        <div style="flex: 0 1 300px;">
-          <h2 style="display: inline-block;background-color: white;width: 1.5em;color: #003c5e;margin-bottom: 0.4em;">2</h2>
-          <div>I often handle a variety of tasks, front-end and back-end. I prefer to do analytical things.</div>
-        </div>
-        <div style="flex: 0 1 300px;">
-          <h2 style="display: inline-block;background-color: white;width: 1.5em;color: #003c5e;margin-bottom: 0.4em;">3</h2>
-          <div>I'm continually learning, educating and seeking better ways!</div>
-        </div>
-      </div> -->
-
       <div id="home-hero-photo" class="hero-photo">
         <div class="mask1"></div>
         <div class="mask2"></div>
         <div class="mask2" style="z-index: 1;box-shadow: none;"></div>
-        <!-- <img src="{{ site.link }}/wp-content/themes/kaltimber/assets/dist/images/kal_bizjelly-1-300x300.jpg"> -->
-        <!-- <img src="{{ site.link }}/wp-content/uploads/2019/11/me.png" alt="Photo of Kal"> -->
         <img src="{{ Image(411).src }}" alt="{{ Image(411).alt }}" srcset="{{ Image(411).srcset }}" sizes="{{ Image(411).img_sizes }}" />
 
       </div>
@@ -343,48 +313,36 @@ I specialize in WordPress and have experience with Vue/React, Node.js/PHP/Go, My
         <div style="position: relative;width: 100%;">
 
           <div style="box-shadow: 0px 18px 40px -10px #0000002b;background-color: white;">
-            <div id="home-hero-text" style="max-width: 600px;font-family: Courier;
-font-size: 1.2em;
-line-height: 1.2;
-margin: 0 auto;
-color: #000; font-variant: petite-caps;">
+            <div id="home-hero-text" style="max-width: 600px;font-family: Courier;font-size: 1.2em;line-height: 1.2;margin: 0 auto;color: #000; font-variant: petite-caps;">
 
-              <h2 style="padding: 0;">HOWDY!</h2>
-              <p>Nice to meet you, my name is
+              	<h2 style="padding: 0;">HOWDY!</h2>
+              	<p>Nice to meet you, my name is
                 <span class="hilight">Kal</span>.</p>
 
-              <p style="margin-top: 0;">I'm a versatile
-                <span class="hilight">web developer based in Toronto</span>, primarily working as a freelancer for small business clients and agencies.
-            </p>
+              	<p style="margin-top: 0;">I'm a versatile
+                	<span class="hilight">web developer based in Toronto</span>, primarily working as a freelancer for small business clients and agencies.
+           		</p>
 
-            <p style="margin-top: 0;">
-                A diverse work background, including entrepreneurial ventures, has given me <span class="hilight">fresh perspectives and experience</span> which I hope to translate into every project I work on!
-              </p>
-              <!-- <p style="margin-top: 0;">As a self-taught hobbyist, I'm <span class="hilight">always learning</span> and tend to get obsessive when seeking out efficiencies whether it's troubleshooting a bug, responsive design, performance optimization or
-              making a better workflow.</p> <p style="margin-top: 0;">I've gained <span class="hilight">experience as an entrepreneur</span>, grinded through many jobs and have felt both failures and successes. Outside of work I have interests in sports, health
-              &amp; fitness, outdoor crafts and music.</p> -->
-
+				<p style="margin-top: 0;">
+					A diverse work background, including entrepreneurial ventures, has given me <span class="hilight">fresh perspectives and experience</span> which I hope to translate into every project I work on!
+				</p>
             </div>
 
+			<div class="wp-block-group" id="homepage-actions">
+			<div class="wp-block-group__inner-container">
+				<div class="wp-block-button">
+				<a class="wp-block-button__link no-border-radius" href="work">Work</a>
+				</div>
 
-                          <div class="wp-block-group" id="homepage-actions">
-                            <div class="wp-block-group__inner-container">
-                              <div class="wp-block-button">
-                                <a class="wp-block-button__link no-border-radius" href="work">Work</a>
-                              </div>
+				<div class="wp-block-button">
+				<a class="wp-block-button__link no-border-radius" href="about">About</a>
+				</div>
 
-                              <div class="wp-block-button">
-                                <a class="wp-block-button__link no-border-radius" href="about">About</a>
-                              </div>
-
-                              <div class="wp-block-button">
-                                <a class="wp-block-button__link no-border-radius" href="#contact">Contact</a>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- <h2 class="has-text-align-center" style="padding-bottom: 2em;padding-top: 1em;">… or read more<br>↓</h2> -->
-
+				<div class="wp-block-button">
+				<a class="wp-block-button__link no-border-radius" href="#contact">Contact</a>
+				</div>
+			</div>
+			</div>
           </div>
         </div>
 

@@ -1,20 +1,16 @@
-{# File: views/partials/footer.twig #}
-
 <footer>
 
   <section id="contact" class="widthFull container" style="background-color:#00669f;padding-top: 4em;padding-bottom: 4em;min-height: 12em;">
     <div class="section-inner widthGlobal" style="color: #ffffff;flex-direction: row;justify-content: space-around;">
-      <div>
 
-              <div class="hero-photo">
-                    <img src="{{ site.link }}/wp-content/uploads/2019/11/me.png">
-              </div>
+      <div>
+        <div class="hero-photo">
+              <img src="{{ site.link }}/wp-content/uploads/2019/11/me.png">
+        </div>
         <h2 style="font-weight: normal;">Hello!</h2>
       </div>
       <div style="color: #000000;">
-
         {{ function('do_shortcode', '[contact-form-7 id="431" title="Contact form 1"]') }}
-
       </div>
 
     </div>

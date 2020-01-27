@@ -1,22 +1,14 @@
-{# File: views/pages/page-work.twig #}
-
 {% extends 'layouts/base.twig' %}
 {% block content %}
 
   <section class="widthFull container">
 
     <div class="section-inner">
-
         {% for project in projects %}
           <h2>{{ project.title }}</h2>
-
-
         {% endfor %}
 
-
-
         {{ post.content | shortcodes }}
-
     </div>
 
   </section>

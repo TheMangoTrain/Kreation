@@ -1,14 +1,11 @@
 {% extends 'layouts/base.twig' %}
+
 {% block content %}
-
-
   <section class="widthFull container">
 
-            <div class="section-inner widthNarrow">
+    <div class="section-inner widthNarrow">
             
-        {{ post.content | shortcodes }}
-
-    
+    {{ post.content | shortcodes }} 
 
     {% if post.comment_status != 'closed' %}
         <section class="comments">
@@ -21,14 +18,10 @@
                     {# include "partials/comment.twig" with {comment:cmt} #}
                 {% endfor %}
             </div>
-
         </section>
     {% endif %}
 
     </div>
-
   </section>
 
-
-  
 {% endblock %}

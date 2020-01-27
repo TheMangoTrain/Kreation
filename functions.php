@@ -1,14 +1,11 @@
 <?php
-/* functions.php */
-require_once(__DIR__ . '/vendor/autoload.php');
 
-//$timber = new \Timber\Timber();
+require_once(__DIR__ . '/vendor/autoload.php');
 
 class mySite extends Timber\Site {
     public function __construct() {
         add_theme_support( 'post-thumbnails' );
         add_theme_support( 'menus' );
-
 
         add_theme_support(
 			'html5',
@@ -19,10 +16,8 @@ class mySite extends Timber\Site {
 				'caption',
 			)
 		);
-
         
         add_filter( 'timber_context', array( $this, 'add_to_context' ) );
-
 
         // register image sizes (for theme)
         add_action( 'after_setup_theme', array( $this,'kal_custom_add_image_sizes') );
@@ -31,10 +26,8 @@ class mySite extends Timber\Site {
         // The custom sizes will appear in the drop-down for image size in block settings sidebar.
         add_filter( 'image_size_names_choose', array( $this,'kal_register_custom_image_sizes') );
 
-
         parent::__construct();
     }
-
 
     function kal_custom_add_image_sizes() {
       add_image_size( 'medium300w', 300, 450 );
@@ -63,9 +56,7 @@ class mySite extends Timber\Site {
 new mySite();
 
 
-
 if ( !is_admin() ) wp_deregister_script('jquery');
-
 
 /*
 add_filter('script_loader_src','add_nonce_to_script',10,2);
@@ -141,15 +132,6 @@ function sc_taglist($atts){
 add_shortcode('tags', 'sc_taglist');
 
 
-
-
-
-
-
-
-
-
-
 /**
  * Disable the emoji's
  */
@@ -197,10 +179,5 @@ $urls = array_diff( $urls, array( $emoji_svg_url ) );
 
 return $urls;
 }
-
-
-
-
-
 
 ?>
