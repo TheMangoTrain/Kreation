@@ -1,0 +1,9 @@
+{# File: views/partials/nav-links.twig #}
+
+<ul class="nav-links">
+  {% for item in menu.items %}
+    <li class="{{item.class}} ">
+      <a href="{{item.link}}">{{item.title}}</a>
+    </li>
+  {% endfor %}
+</ul>

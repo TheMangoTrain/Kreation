@@ -1,0 +1,13 @@
+{# File views/pages/index.twig #}
+
+{% extends 'layouts/base.twig' %}
+{% block content %}
+    <div>
+        {% for post in posts %}
+            <div>
+                {% include 'partials/post-tease-card.twig' %}
+            </div>
+        {% endfor %}
+    </div>
+    {% include 'partials/pagination.twig' %}
+{% endblock %}

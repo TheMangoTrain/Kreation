@@ -1,0 +1,37 @@
+{# File: views/partials/pagination.twig #}
+
+{# Previous post link if it exists #}
+{% if pagination.pages is not empty %}
+    <ul>
+        {% if pagination.pages|first and pagination.pages|first.current != 1 %}
+            <li>
+                <a href="{{ pagination.prev.link }}">Previous</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ pagination.prev.link }}" tabindex="-1">Previous</a>
+            </li>
+        {% endif %}
+        {% for pager in pagination.pages %}
+            {% if pager.current %}
+                <li>
+                    <a href="{{ pager.link }}">{{ pager.title }}</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ pager.link }}">{{ pager.title }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if(pagination.next) %}
+            <li>
+                <a href="{{ pagination.next.link }}">Next</a>
+            </li>
+        {% else %}
+            <li>
+                <a>Next</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}

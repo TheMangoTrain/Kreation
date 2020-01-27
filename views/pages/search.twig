@@ -1,0 +1,17 @@
+{# File views/pages/search.twig #}
+
+{% extends 'layouts/base.twig' %}
+{% block content %}
+    <div style="overflow:hidden">
+        <div>
+            <h2>Found {{ posts|length }} results for your query "{{ search_term }}"</h2>
+        </div>
+    </div>
+    <div>
+        {% for post in posts %}
+            <div>
+                {% include 'partials/post-tease-card.twig' %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{# File: views/partials/content-blog.twig #}
+<main role="main" class="container">
+  <div class="page-main-inner">
+    <div class="page-title hero-title">
+      <h1>{{ post.title }}</h1>
+    </div>
+
+    <div class="row">
+      <div>
+        {% block content %}{% endblock %}
+      </div>
+      <aside>
+        {% include 'partials/sidebar.twig' %}
+      </aside>
+    </div>
+  </div>
+</main>
