@@ -68,9 +68,37 @@ hr {
     max-width: 300px;
 }
 
-figcaption {
-    visibility: hidden;
+.bigcta .wp-block-button__link {
+    font-size: 2em;
+    border-radius: 40px;
+    font-size: 1.7em;
+    border-radius: 40px;
+    padding: 0.4em 1em;
 }
+
+figcaption {
+    display: none !important;
+}
+
+.dont-break-out {
+
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+  
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  
+  }
 
 
 /* =================================== */
@@ -905,7 +933,6 @@ footer .nav-links {
     padding: 0;
     padding-top: 1em;
     flex-wrap: wrap;
-    flex-direction: column;
     text-transform: uppercase;
 }
 
@@ -943,12 +970,12 @@ footer form>p {
     margin-bottom: 1.5em;
 }
 
-label {
+.dcf-form label {
     display: none;
 }
 
-input,
-textarea {
+.dcf-form input,
+.dcf-form textarea {
     transition: border ease .25s;
     width: 100%;
     outline: none;
@@ -966,7 +993,7 @@ textarea {
     box-shadow: 0px 3px 10px -5px #00000038;
 }
 
-textarea {
+.dcf-form textarea {
     resize: vertical;
     overflow: auto;
     vertical-align: top;
@@ -974,13 +1001,13 @@ textarea {
     height: 180px;
 }
 
-input::selection {
+.dcf-form input::selection {
     background: #9da5b4;
     color: #fff;
     text-shadow: none;
 }
 
-form .wpcf7-submit {
+.dcf-form .wpcf7-submit {
     color: #000;
     transition: color .2s ease;
     white-space: nowrap;
@@ -998,8 +1025,23 @@ form .wpcf7-submit {
     font-weight: 700;
 }
 
-form p>br {
+.dcf-form p>br {
     display: none;
+}
+
+.dcf-form button {
+    font-size: 1.4em;
+    border: 0;
+    padding: 0.3em 0.6em;
+    text-transform: uppercase;
+    color: #eeeeee;
+    border-radius: 8px;
+    background-color: #333333;
+    cursor: pointer;
+}
+
+.dcf-form button:hover {
+    background-color: #777777;
 }
 
 
@@ -1104,7 +1146,6 @@ form p>br {
 
 @media (max-width: 450px) {
     footer .nav-links {
-        flex-direction: column;
         align-items: center;
         margin-top: 2em;
     }
