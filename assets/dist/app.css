@@ -931,7 +931,6 @@ footer .nav-links {
     justify-content: center;
     list-style: none;
     padding: 0;
-    padding-top: 1em;
     flex-wrap: wrap;
     text-transform: uppercase;
 }
@@ -968,6 +967,30 @@ footer form input {}
 footer form>p {
     margin: 0;
     margin-bottom: 1.5em;
+}
+
+
+#footer-special-links {
+    align-self: center;
+    display: flex;
+    flex: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 200px;
+    padding: 1em;
+    box-sizing: border-box;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#footer-special-links a:hover {
+    background-color: #002539;
+}
+
+#footer-special-links svg {
+    fill: #ffffff;
+    max-width: 32px;
 }
 
 .dcf-form label {
@@ -1147,8 +1170,7 @@ footer form>p {
 @media (max-width: 450px) {
     footer .nav-links {
         align-items: center;
-        margin-top: 2em;
-    }
+     }
 }
 
 @media (max-width: 400px) {
