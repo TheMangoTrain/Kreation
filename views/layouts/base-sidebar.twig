@@ -1,27 +1,4 @@
-<!doctype html>
-<html lang="en">
-  <head>
-
-    {{ wp_head }}
-
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="icon" href="{{ site.theme.link }}/favicon.ico"/>
-    <title>Kal's Blog</title>
-    <link href="{{ site.theme.link }}/assets/dist/app.css" rel="stylesheet"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=wAdrE5xLpY">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=wAdrE5xLpY">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png?v=wAdrE5xLpY">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=wAdrE5xLpY">
-    <link rel="manifest" href="/site.webmanifest?v=wAdrE5xLpY">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg?v=wAdrE5xLpY" color="#003c5e">
-    <link rel="shortcut icon" href="/favicon.ico?v=wAdrE5xLpY">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=wAdrE5xLpY">
-    <meta name="theme-color" content="#ffffff">
-  </head>
+{% include 'partials/header-base.twig' %}
 
   <body class="{{body_class}}" data-template="base-sidebar.twig">
 
@@ -29,11 +6,6 @@
 
     {% include 'partials/content-blog.twig' %}
 
+
     {% include 'partials/footer.twig' %}
 
-    {{ wp_footer }}
-
-    <script src="{{ site.theme.link }}/assets/dist/app.js"></script>
-
-  </body>
-</html>
