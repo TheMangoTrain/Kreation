@@ -25,6 +25,14 @@
   </head>
   <body class="{{body_class}}" data-template="base.twig">
 
+   <script>
+      // this function must be defined in the global scope
+      window.fadeIn = function(obj) {
+        obj.classList.toggle('fade');
+
+      }
+    </script>
+
     {% include 'partials/header.twig' %}
 
     <main role="main">

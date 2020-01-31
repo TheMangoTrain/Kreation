@@ -32,8 +32,22 @@
 
         <div class="header section-inner widthGlobal">
 
-          <div class="left">
+          <div class="page-controls">
+
+            {% if post.next %}
+                <a href="{{ post.next.link }}" style="flex: 1;">Prev<h5 class="title">{{ post.next.title }}</h5></a>
+            {% else %}
+                <div> </div>
+            {% endif %}
+
             {% include 'partials/work-home.twig' %}
+
+            {% if post.prev %}
+                <a href="{{ post.prev.link }}" style="text-align: right;flex: 1;">Next<h5 class="title">{{ post.prev.title }}</h5></a>
+            {% else %}
+                <div> </div>
+            {% endif %}
+
           </div>
 
           <div class="page-title hero-title">
@@ -59,11 +73,22 @@
 
         <div class="section-inner widthGlobal">
 
-          <div style="margin-top: 3em;">
-            {% include 'partials/work-home.twig' %}
-          </div>
+          
+          {# include 'partials/pagination.twig' #}
 
-          {% include 'partials/pagination.twig' %}
+          <div class="page-controls">
+
+            {% if post.next %}
+                <a href="{{ post.next.link }}">Prev<h5 class="title">{{ post.next.title }}</h5></a>
+            {% endif %}
+
+            {% include 'partials/work-home.twig' %}
+
+            {% if post.prev %}
+                <a href="{{ post.prev.link }}" style="text-align: right">Next<h5 class="title">{{ post.prev.title }}</h5></a>
+            {% endif %}
+
+          </div>
 
 
         </div>

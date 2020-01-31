@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,800&display=swap');
+
 html.modal-open {
     -ms-overflow-style: scrollbar;
     overflow: hidden;
@@ -66,6 +67,15 @@ h2 {}
 hr {
     width: 80%;
     max-width: 300px;
+}
+
+img {
+    transition: all 0.3s;
+    opacity: 1;
+}
+
+img.fade {
+    opacity: 0;
 }
 
 .bigcta .wp-block-button__link {
@@ -374,11 +384,27 @@ nav {
 }
 
 .single-project main .header {
-    flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.single-project main .page-controls {
+    width: 100%;
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+}
+
+.single-project main .page-controls a {
+    text-decoration: none;
+}
+
+
+.single-project main .page-controls a h5 {
+    font-weight: normal;
+}
+
 
 .page-title h1,
 .page-title h2 {
@@ -1165,6 +1191,10 @@ footer form>p {
     #home-hero-title h2 {
         font-size: 1.3em;
     }
+
+    .single-project main .page-controls .title {
+        display: none;
+        }
 }
 
 @media (max-width: 450px) {

@@ -1,34 +1,26 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
-    //jQuery(this).scrollTop(0);
-
   var screenWidth = document.documentElement.clientWidth;
 
   initResizeRefresh(screenWidth);
 
-
-  mobileNavigation();
+  initMobileNav();
 
 });
 
-// ==================================================
-// Set mobile navigation
-// ==================================================
-function mobileNavigation() {
 
+// ==================================================
+// Setup mobile navigation
+// ==================================================
+function initMobileNav() {
 
   document.getElementById("nav-icon-open").addEventListener('click', function() {
-
     toggleMobileMenu();
-
   }, false);
 
   document.getElementById("nav-icon-close").addEventListener('click', function() {
-
     toggleMobileMenu();
-
   }, false);
-
 
   var selectClass = document.getElementById("nav-main").getElementsByClassName("a");
 
@@ -38,26 +30,6 @@ function mobileNavigation() {
     }, false);
   };
 
-  /*
-    jQuery('#nav-icon-open').on('click', function(){
-          //var el = document.getElementById("hamburger_toggle");
-          //var br = el.getBoundingClientRect();
-          //  el.style.right = br.right + 'px';
-          //el.style.top = br.top + 'px';
-
-          jQuery('html').addClass('modal-open');
-    });
-
-    jQuery('#nav-icon-close').on('click', function(){
-          jQuery('html').removeClass('modal-open');
-    });
-
-
-    jQuery('#nav-overlay a').on('click', function(){
-          jQuery('html').removeClass('modal-open');
-    });
-
-    */
 }
 
 function toggleMobileMenu(mode) {
@@ -70,9 +42,9 @@ function toggleMobileMenu(mode) {
   }
 }
 
-
-
-
+// ==================================================
+// Setup screen refresh
+// ==================================================
 function initResizeRefresh(width) {
 
   window.addEventListener("resize", function() {
