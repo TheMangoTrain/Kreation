@@ -23,9 +23,11 @@
     <meta name="theme-color" content="#ffffff" />
 
     <script>    
-        // FADE IN ELEMENTS
-        // Script given high priority. Used to fade in select images that are above the fold and usually have a delayed loading
-        // Applies to any element with class "fade in"
+        // FADE-IN ELEMENTS
+        // 
+        // For any element with class "fadeIn", on object loading it toggles a "fade" class, smoothly fading them in.
+        // Useful for heavy images that are early (ie above-the-fold) and would otherwise appear delayed and abruptly appear.
+        // Script is here, above body, for high priority.
         window.fadeIn = function(obj) {
           obj.classList.toggle('fade');
         }
