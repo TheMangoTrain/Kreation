@@ -457,26 +457,28 @@ flex-wrap: wrap;
 /* HOME PAGE                                 */
 /* ========================================= */
 
-.home .hero .section-inner {
+.herolayout .hero .section-inner {
     padding-top: 2em;
     padding-left: 2em;
     padding-right: 2em;
     box-sizing: border-box;
 }
 
-.home .hero .page-title {
+.herolayout .hero .page-title {
     color: #ffffff;
     padding-bottom: 4em;
 }
 
-.home .hero .page-title h1 {
+.herolayout .hero .page-title h1 {
     text-transform: normal;
     border: 0;
 }
 
-.home main .page-title {
+.herolayout_type1 main .page-title {
     display: none;
 }
+
+
 
 #home-hero-title {
     padding-left: 2em;
@@ -646,6 +648,12 @@ flex-wrap: wrap;
 
 #home-statement3 {
     font-size: 2.2em;
+}
+
+
+.herolayout .wp-block-image img {
+    height: auto;
+    object-fit: contain;
 }
 
 

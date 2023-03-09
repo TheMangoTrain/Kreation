@@ -2,11 +2,6 @@
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-
-// ========================================================
-// Main construct, Timber
-// ========================================================
-
 class kreationSite extends Timber\Site {
     public function __construct() {
         add_theme_support( 'post-thumbnails' );

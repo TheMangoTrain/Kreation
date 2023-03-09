@@ -1,0 +1,17 @@
+{% include 'partials/header-base.twig' %}
+
+  <body class="{{body_class}} herolayout herolayout_type2" data-template="base-hero.twig">
+
+    {% include 'partials/header.twig' %}
+
+    <main role="main" class="widthFull container" style="padding-top: 0;">
+      <div class="page-main-inner">
+
+        {% block content %}{% endblock %}
+
+      </div>
+    </main>
+
+{% include 'partials/footer.twig' %}
+
+{{ wp_footer }}
