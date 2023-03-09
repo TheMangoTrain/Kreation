@@ -14,7 +14,7 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
 	}
 
 	function testACFGetFieldPost() {
-		$pid = $this->factory->post->create();
+		$pid = self::factory()->post->create();
 		update_field( 'subhead', 'foobar', $pid );
 		$str = '{{post.get_field("subhead")}}';
 		$post = new TimberPost( $pid );
@@ -23,7 +23,7 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
 	}
 
 	function testWPPostConvert() {
-		$pid = $this->factory->post->create();
+		$pid = self::factory()->post->create();
 		$wp_post = get_post( $pid );
 		$post = new TimberPost();
 		$timber_post = $post->convert( $wp_post );
@@ -31,15 +31,34 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
 	}
 
 	function testACFHasFieldPostFalse() {
-		$pid = $this->factory->post->create();
+		$pid = self::factory()->post->create();
 		$str = '{% if post.has_field("heythisdoesntexist") %}FAILED{% else %}WORKS{% endif %}';
 		$post = new TimberPost( $pid );
 		$str = Timber::compile_string( $str, array( 'post' => $post ) );
 		$this->assertEquals('WORKS', $str);
 	}
 
+	function testCustomTimeField() {
+		$pid = self::factory()->post->create(array('post_content' => 'Cool content bro!', 'post_date' => '2020-02-07 08:03:00'));
+		update_field( '_time', 'I am custom time', $pid );
+		update_field( 'time', 'I am custom time', $pid );
+		$str = '{{ post.time }}';
+		$post = new Timber\Post( $pid );
+		$str = Timber::compile_string( $str, array( 'post' => $post ) );
+		$this->assertEquals( '8:03 am', trim($str) );
+	}
+
+	function testCustomContentField() {
+		$pid = self::factory()->post->create(array('post_content' => 'Cool content bro!'));
+		update_field( '_content', 'I am custom content', $pid );
+		$str = '{{ post.content }}';
+		$post = new Timber\Post( $pid );
+		$str = Timber::compile_string( $str, array( 'post' => $post ) );
+		$this->assertEquals( '<p>Cool content bro!</p>', trim($str) );
+	}
+
 	function testACFHasFieldPostTrue() {
-		$pid = $this->factory->post->create();
+		$pid = self::factory()->post->create();
 		update_post_meta($pid, 'best_radiohead_album', 'in_rainbows');
 		$str = '{% if post.has_field("best_radiohead_album") %}In Rainbows{% else %}OK Computer{% endif %}';
 		$post = new TimberPost( $pid );
@@ -56,7 +75,7 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
 	}
 
 	function testACFCustomFieldTermTag() {
-		$tid = $this->factory->term->create();
+		$tid = self::factory()->term->create();
 		update_field( 'color', 'green', 'post_tag_'.$tid );
 		$term = new TimberTerm( $tid );
 		$str = '{{term.color}}';
@@ -64,7 +83,7 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
 	}
 
 	function testACFGetFieldTermTag() {
-		$tid = $this->factory->term->create();
+		$tid = self::factory()->term->create();
 		update_field( 'color', 'blue', 'post_tag_'.$tid );
 		$term = new TimberTerm( $tid );
 		$str = '{{term.get_field("color")}}';
@@ -74,8 +93,8 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
 
 	function testACFFieldObject() {
 		$key = 'field_5ba2c660ed26d';
-		$fp_id = $this->factory->post->create(array('post_content' => 'a:10:{s:4:"type";s:4:"text";s:12:"instructions";s:0:"";s:8:"required";i:0;s:17:"conditional_logic";i:0;s:7:"wrapper";a:3:{s:5:"width";s:0:"";s:5:"class";s:0:"";s:2:"id";s:0:"";}s:13:"default_value";s:0:"";s:11:"placeholder";s:0:"";s:7:"prepend";s:0:"";s:6:"append";s:0:"";s:9:"maxlength";s:0:"";}', 'post_title' => 'Thinger', 'post_name' => $key, 'post_type' => 'acf-field'));
-		$pid      = $this->factory->post->create();
+		$fp_id = self::factory()->post->create(array('post_content' => 'a:10:{s:4:"type";s:4:"text";s:12:"instructions";s:0:"";s:8:"required";i:0;s:17:"conditional_logic";i:0;s:7:"wrapper";a:3:{s:5:"width";s:0:"";s:5:"class";s:0:"";s:2:"id";s:0:"";}s:13:"default_value";s:0:"";s:11:"placeholder";s:0:"";s:7:"prepend";s:0:"";s:6:"append";s:0:"";s:9:"maxlength";s:0:"";}', 'post_title' => 'Thinger', 'post_name' => $key, 'post_type' => 'acf-field'));
+		$pid      = self::factory()->post->create();
 		update_field( 'thinger', 'foo', $pid );
 		update_field( '_thinger', $key, $pid );
 		$post     = new TimberPost($pid);
@@ -100,9 +119,9 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
     	if (is_dir($cache_dir)){
     		TimberLoader::rrmdir($cache_dir);
     	}
-    	$this->assertFileNotExists($cache_dir);
+    	$this->assertFileDoesNotExist($cache_dir);
     	Timber::$cache = true;
-    	$pid = $this->factory->post->create();
+    	$pid = self::factory()->post->create();
     	$post = new TimberPost($pid);
     	Timber::compile('assets/single-post.twig', array('post' => $post));
     	sleep(1);
@@ -117,9 +136,9 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
     	if (is_dir($cache_dir)){
     		TimberLoader::rrmdir($cache_dir);
     	}
-    	$this->assertFileNotExists($cache_dir);
+    	$this->assertFileDoesNotExist($cache_dir);
     	Timber::$cache = true;
-    	$pid = $this->factory->post->create();
+    	$pid = self::factory()->post->create();
     	$post = new TimberPost($pid);
     	Timber::compile('assets/single-post.twig', array('post' => $post));
     	sleep(1);
@@ -135,9 +154,9 @@ class TestTimberIntegrations extends Timber_UnitTestCase {
     	if (is_dir($cache_dir)){
     		TimberLoader::rrmdir($cache_dir);
     	}
-    	$this->assertFileNotExists($cache_dir);
+    	$this->assertFileDoesNotExist($cache_dir);
     	Timber::$cache = true;
-    	$pid = $this->factory->post->create();
+    	$pid = self::factory()->post->create();
     	$post = new TimberPost($pid);
     	Timber::compile('assets/single-post.twig', array('post' => $post));
     	sleep(1);

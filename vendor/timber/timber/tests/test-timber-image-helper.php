@@ -46,7 +46,7 @@
 			$this->setupCustomWPDirectoryStructure();
 
 			$upload_dir = wp_upload_dir();
-			$post_id = $this->factory->post->create();
+			$post_id = self::factory()->post->create();
 			$filename = TestTimberImage::copyTestImage( 'flag.png' );
 			$destination_url = str_replace( ABSPATH, 'http://'.$_SERVER['HTTP_HOST'].'/', $filename );
 			$wp_filetype = wp_check_filetype( basename( $filename ), null );
@@ -72,6 +72,21 @@
 			$exists = file_exists( $resized_path );
 			$this->assertTrue( $exists );
 		}
+
+		function testDeleteSideloadedFile() {
+			$filename = 'acGwPDj4_400x400';
+			$img = Timber\ImageHelper::sideload_image('https://pbs.twimg.com/profile_images/768086933310476288/'.$filename.'.jpg');
+			$files = scandir('/tmp');
+			$matches = false;
+			foreach ($files as $file) {
+				$substr = substr($file, 0, strlen($filename));
+				if ( $substr == $filename ) {
+					$matches = true;
+				}
+			}
+			$this->assertFalse($matches);
+		}
+
 		/**
 		 * @doesNotPerformAssertions
 		 */

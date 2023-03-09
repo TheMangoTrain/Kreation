@@ -23,7 +23,7 @@ class QueryIterator implements \Iterator, \Countable {
 	public function __construct( $query = false, $posts_class = 'Timber\Post' ) {
 		add_action('pre_get_posts', array($this, 'fix_number_posts_wp_quirk'));
 		add_action('pre_get_posts', array($this, 'fix_cat_wp_quirk'));
-		
+
 		if ( $posts_class ) {
 			$this->_posts_class = $posts_class;
 		}
@@ -62,6 +62,18 @@ class QueryIterator implements \Iterator, \Countable {
 
 	public function post_count() {
 		return $this->_query->post_count;
+	}
+
+	/**
+	 * Gets the amount of found posts in the query.
+	 *
+	 * @api
+	 * @since 1.11.1
+	 *
+	 * @return int
+	 */
+	public function found_posts() {
+		return $this->_query->found_posts;
 	}
 
 	public function get_pagination( $prefs ) {
@@ -118,10 +130,11 @@ class QueryIterator implements \Iterator, \Countable {
 	// Iterator Interface
 	//
 
-	public function valid() {
+	public function valid(): bool {
 		return $this->_query->have_posts();
 	}
 
+	#[\ReturnTypeWillChange]
 	public function current() {
 		global $post;
 
@@ -135,12 +148,15 @@ class QueryIterator implements \Iterator, \Countable {
 	/**
 	 * Don't implement next, because current already advances the loop
 	 */
+	#[\ReturnTypeWillChange]
 	final public function next() {}
 
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		$this->_query->rewind_posts();
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key() {
 		$this->_query->current_post;
 	}
@@ -187,7 +203,7 @@ class QueryIterator implements \Iterator, \Countable {
 	 * @return int The custom count as an integer.
 	 * The return value is cast to an integer.
 	 */
-	public function count() {
+	public function count(): int {
 		return $this->post_count();
 	}
 }

@@ -35,7 +35,7 @@ use Timber\Loader;
  */
 class Timber {
 
-	public static $version = '1.10.1';
+	public static $version = '1.22.1';
 	public static $locations;
 	public static $dirname = 'views';
 	public static $twig_cache = false;
@@ -157,7 +157,7 @@ class Timber {
 	 * @api
 	 * @param mixed   $query
 	 * @param string  $PostClass
-	 * @return array|bool|null
+	 * @return Post|array|bool|null
 	 */
 	public static function query_post( $query = false, $PostClass = 'Timber\Post' ) {
 		return PostGetter::query_post($query, $PostClass);
@@ -278,6 +278,7 @@ class Timber {
 	 * Compile a Twig file.
 	 *
 	 * Passes data to a Twig file and returns the output.
+	 * If the template file doesn't exist it will throw a warning when WP_DEBUG is enabled.
 	 *
 	 * @api
 	 * @example
@@ -331,6 +332,11 @@ class Timber {
 			}
 
 			$output = $loader->render($file, $data, $expires, $cache_mode);
+		} else {
+			if ( is_array($filenames) ) {
+				$filenames = implode(", ", $filenames);
+			}
+			Helper::error_log( 'Error loading your template files: '.$filenames.'. Make sure one of these files exists.' );
 		}
 
 		do_action('timber_compile_done');
@@ -453,7 +459,7 @@ class Timber {
 	 * @param array   $data
 	 * @return string
 	 */
-	public static function get_sidebar_from_php( $sidebar = '', $data ) {
+	public static function get_sidebar_from_php( $sidebar = '', $data = array() ) {
 		$caller = LocationManager::get_calling_script_dir(1);
 		$uris = LocationManager::get_locations($caller);
 		ob_start();

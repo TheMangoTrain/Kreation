@@ -168,7 +168,7 @@ class URLHelper {
 	 */
 	public static function file_system_to_url( $fs ) {
 		$relative_path = self::get_rel_path($fs);
-		$home = site_url('/'.$relative_path);
+		$home = home_url('/'.$relative_path);
 		$home = apply_filters('timber/URLHelper/file_system_to_url', $home);
 		return $home;
 	}
@@ -207,11 +207,11 @@ class URLHelper {
 	 */
 	public static function remove_double_slashes( $url ) {
 		$url = str_replace('//', '/', $url);
-		if ( strstr($url, 'http:') && !strstr($url, 'http://') ) {
-			$url = str_replace('http:/', 'http://', $url);
-		}
-		if ( strstr($url, 'https:') && !strstr($url, 'https://') ) {
-			$url = str_replace('https:/', 'https://', $url);
+		$schemes_whitelist = apply_filters( 'timber/url/schemes-whitelist', array( 'http', 'https', 's3', 'gs' )  );
+		foreach ( $schemes_whitelist as $scheme ) {
+			if ( strstr($url, $scheme . ':') && !strstr($url, $scheme . '://') ) {
+				$url = str_replace( $scheme . ':/', $scheme . '://', $url );
+			}
 		}
 		return $url;
 	}

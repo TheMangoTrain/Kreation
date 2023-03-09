@@ -328,7 +328,7 @@ class TestTimberMenu extends Timber_UnitTestCase {
 	function testMenuWithImage() {
 		add_theme_support('thumbnails');
 		self::setPermalinkStructure();
-		$pid = $this->factory->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
+		$pid = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
 		$iid = TestTimberImage::get_image_attachment($pid);
 		add_post_meta( $pid, '_thumbnail_id', $iid, true );
 		$post = new \Timber\Post($pid);
@@ -340,8 +340,8 @@ class TestTimberMenu extends Timber_UnitTestCase {
 
 
 	function testPagesMenu() {
-		$pg_1 = $this->factory->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
-		$pg_2 = $this->factory->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
+		$pg_1 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
+		$pg_2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
 		$page_menu = new TimberMenu();
 		$this->assertEquals( 2, count( $page_menu->items ) );
 		$this->assertEquals( 'Bar Page', $page_menu->items[0]->title() );
@@ -351,11 +351,27 @@ class TestTimberMenu extends Timber_UnitTestCase {
 		$this->assertGreaterThanOrEqual( 3, count( $menu->get_items() ) );
 	}
 
+	function testJSONEncodedMenu() {
+		$pg_1 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
+		$pg_2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
+		$page_menu = new Timber\Menu();
+		$text = json_encode($page_menu->get_items());
+		$this->assertGreaterThan(1, strlen($text));
+	}
+
+	function testMenuItemMenuProperty() {
+		$pg_1 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
+		$pg_2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
+		$page_menu = new Timber\Menu();
+		$items = $page_menu->get_items();
+		$menu = $items[0]->menu;
+		$this->assertEquals('Timber\Menu', get_class($menu));
+	}
 
 
 	function testPagesMenuWithFalse() {
-		$pg_1 = $this->factory->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
-		$pg_2 = $this->factory->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
+		$pg_1 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
+		$pg_2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
 		$page_menu = new TimberMenu();
 		$this->assertEquals( 2, count( $page_menu->items ) );
 		$this->assertEquals( 'Bar Page', $page_menu->items[0]->title() );
@@ -369,8 +385,8 @@ class TestTimberMenu extends Timber_UnitTestCase {
 	 * Make sure we still get back nothing even though we have a fallback present
 	 */
 	function testMissingMenu() {
-		$pg_1 = $this->factory->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
-		$pg_2 = $this->factory->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
+		$pg_1 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Foo Page', 'menu_order' => 10 ) );
+		$pg_2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Bar Page', 'menu_order' => 1 ) );
 		$missing_menu = new TimberMenu( 14 );
 		$this->assertTrue( empty( $missing_menu->items ) );
 	}
@@ -395,10 +411,10 @@ class TestTimberMenu extends Timber_UnitTestCase {
 		$context['menu'] = new TimberMenu();
 		$str = Timber::compile( 'assets/menu-classes.twig', $context );
 		$str = trim( $str );
-		$this->assertContains( 'current_page_item', $str );
-		$this->assertContains( 'current-menu-item', $str );
-		$this->assertContains( 'menu-item-object-page', $str );
-		$this->assertNotContains( 'foobar', $str );
+		$this->assertStringContainsString( 'current_page_item', $str );
+		$this->assertStringContainsString( 'current-menu-item', $str );
+		$this->assertStringContainsString( 'menu-item-object-page', $str );
+		$this->assertStringNotContainsString( 'foobar', $str );
 	}
 
 	function testMenuItemLink() {
@@ -415,13 +431,29 @@ class TestTimberMenu extends Timber_UnitTestCase {
 		$this->assertEquals( 'http://upstatement.com', $item->link() );
 	}
 
-	function testMenuMeta() {
+	function testMenuItemMetaAlt() {
+		$menu_info = $this->_createSimpleMenu();
+		$menu = new TimberMenu($menu_info['term_id']);
+		$item = $menu->items[0];
+		$this->assertEquals('molasses', $item->meta('flood'));
+	}
+
+	function testMenuItemMeta() {
 		self::_createTestMenu();
 		$menu = new TimberMenu();
 		$items = $menu->get_items();
 		$item = $items[0];
 		$this->assertEquals( 'funke', $item->tobias );
 		$this->assertGreaterThan( 0, $item->id );
+	}
+
+	function testMenuMeta() {
+		$term = self::_createTestMenu();
+		$menu_id = $term['term_id'];
+		add_term_meta($menu_id, 'nationality', 'Canadian');
+		$menu = new Timber\Menu($menu_id);
+		$string = Timber::compile_string('{{menu.meta("nationality")}}', array('menu' => $menu));
+		$this->assertEquals('Canadian', $string);
 	}
 
 	function testMenuItemWithHash() {
@@ -454,10 +486,10 @@ class TestTimberMenu extends Timber_UnitTestCase {
 
 		// With no options set.
 		$menu = new TimberMenu();
-		$this->assertInternalType("int", $menu->depth);
+		$this->assertIsInt($menu->depth);
 		$this->assertEquals( 0, $menu->depth );
-		$this->assertInternalType("array", $menu->raw_options);
-		$this->assertInternalType('array', $menu->options);
+		$this->assertIsArray($menu->raw_options);
+		$this->assertIsArray($menu->options);
 		$this->assertEquals(array( 'depth' => 0 ), $menu->options);
 
 		// With Valid options set.
@@ -465,11 +497,11 @@ class TestTimberMenu extends Timber_UnitTestCase {
 			'depth' => 1,
 		);
 		$menu = new TimberMenu(self::MENU_NAME, $arguments);
-		$this->assertInternalType("int", $menu->depth);
+		$this->assertIsInt($menu->depth);
 		$this->assertEquals( 1, $menu->depth );
-		$this->assertInternalType("array", $menu->raw_options);
+		$this->assertIsArray($menu->raw_options);
 		$this->assertEquals( $arguments, $menu->raw_options );
-		$this->assertInternalType('array', $menu->options);
+		$this->assertIsArray($menu->options);
 		$this->assertEquals(array( 'depth' => 1 ), $menu->options);
 
 		// With invalid option set.
@@ -477,7 +509,7 @@ class TestTimberMenu extends Timber_UnitTestCase {
 			'depth' => 'boogie',
 		);
 		$menu = new TimberMenu(self::MENU_NAME, $arguments);
-		$this->assertInternalType("int", $menu->depth);
+		$this->assertIsInt($menu->depth);
 		$this->assertEquals( 0, $menu->depth );
 	}
 
@@ -610,13 +642,6 @@ class TestTimberMenu extends Timber_UnitTestCase {
 		$children = $parent->children();
 		$this->assertEquals(1, count($children));
 		$this->assertEquals('Child Page', $children[0]->title());
-	}
-
-	function testMenuItemMeta() {
-		$menu_info = $this->_createSimpleMenu();
-		$menu = new TimberMenu($menu_info['term_id']);
-		$item = $menu->items[0];
-		$this->assertEquals('molasses', $item->meta('flood'));
 	}
 
 	function testMenuName() {
@@ -754,4 +779,6 @@ class TestTimberMenu extends Timber_UnitTestCase {
 		}
 		$this->assertEquals($tmis[4]->post_title, 'People');
 	}
+
+
 }

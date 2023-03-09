@@ -2,6 +2,8 @@
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
+$timber = new \Timber\Timber();
+
 class kreationSite extends Timber\Site {
     public function __construct() {
         add_theme_support( 'post-thumbnails' );
@@ -99,7 +101,7 @@ function create_posttypes() {
             'rewrite' => array('slug' => 'projects'),
             'show_in_rest' => true,
             'taxonomies' => array('category', 'post_tag'),
-            'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'page-attributes' )
+            'supports' => array('title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes')
         )
     );
 
@@ -116,21 +118,19 @@ add_action( 'init', 'create_posttypes' );
 function sc_taglist($atts){
   //var tagOutput = '<div class="tags">' . get_the_tag_list() . '</div>';
 
-  if ( ! empty( $atts['postid'] ) ) {
+    if ( ! empty( $atts['postid'] ) ) {
         $postid = $atts['postid'];
 
         $postTags = get_the_tags($postid);
 
         if ($postTags) {
-              foreach ($postTags as $tag) {
-                    $output .= '<div>' . $tag->name  . '</div>';
-                }
+            foreach ($postTags as $tag) {
+                $output .= '<div>' . $tag->name  . '</div>';
+            }
         } else {
-                  $output = '';
+            $output = '';
         }
         return $output;
-
-
 
     } else {
         return '<div class="tags">' . get_the_tag_list() . '</div>';

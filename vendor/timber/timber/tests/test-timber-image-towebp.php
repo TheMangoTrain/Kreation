@@ -2,10 +2,10 @@
 
 	class TestTimberImageToWEBP extends Timber_UnitTestCase {
 
-		function setUp() {
-			parent::setUp();
+		function set_up() {
+			parent::set_up();
 			if ( ! function_exists( 'imagewebp' ) ) {
-				self::markTestSkipped( 'WEBP conversion tests requires GD extension' );
+				self::markTestSkipped( 'WEBP conversion tests requires imagewebp function' );
 			}
 		}
 

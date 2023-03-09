@@ -54,6 +54,10 @@ class Loader {
 			}
 		}
 
+		if ( $expires === 0 ) {
+			$expires = false;
+		}
+
 		$key = null;
 		$output = false;
 		if ( false !== $expires ) {
@@ -71,7 +75,8 @@ class Loader {
 			}
 			$data = apply_filters('timber_loader_render_data', $data);
 			$data = apply_filters('timber/loader/render_data', $data, $file);
-			$output = $twig->render($file, $data);
+			$template = $twig->load($file);
+			$output = $template->render($data);
 		}
 
 		if ( false !== $output && false !== $expires && null !== $key ) {
@@ -142,7 +147,7 @@ class Loader {
 			$rootPath = null;
 		}
 		$fs = new \Twig\Loader\FilesystemLoader($paths, $rootPath);
-		$fs = apply_filters('timber/loader/loader', $fs);
+		$fs = apply_filters('timber/loader/loader', $fs, $paths, $rootPath);
 		return $fs;
 	}
 
@@ -152,7 +157,7 @@ class Loader {
 	 */
 	public function get_twig() {
 		$loader = $this->get_loader();
-		$params = array('debug' => WP_DEBUG, 'autoescape' => false);
+		$params = array('debug' => WP_DEBUG,'autoescape' => false);
 		if ( isset(Timber::$autoescape) ) {
 			$params['autoescape'] = Timber::$autoescape === true ? 'html' : Timber::$autoescape;
 		}
@@ -169,6 +174,10 @@ class Loader {
 		$twig = new \Twig\Environment($loader, $params);
 		if ( WP_DEBUG ) {
 			$twig->addExtension(new \Twig\Extension\DebugExtension());
+		} else {
+			$twig->addFunction(new Twig_Function('dump', function() {
+				return null;
+			}));
 		}
 		$twig->addExtension($this->_get_cache_extension());
 
@@ -177,6 +186,14 @@ class Loader {
 		$twig = apply_filters('timber/twig/functions', $twig);
 		$twig = apply_filters('timber/twig/escapers', $twig);
 		$twig = apply_filters('timber/loader/twig', $twig);
+
+		$twig = apply_filters('timber/twig', $twig);
+
+		/**
+		 * get_twig is deprecated, use timber/twig
+		 */
+		$twig = apply_filters('get_twig', $twig);
+
 		return $twig;
 	}
 
@@ -188,16 +205,20 @@ class Loader {
 		}
 		$cache_mode = $this->_get_cache_mode($cache_mode);
 		if ( self::CACHE_TRANSIENT === $cache_mode || self::CACHE_SITE_TRANSIENT === $cache_mode ) {
-			return self::clear_cache_timber_database();
+			// $wpdb->query() might return 0 affected rows, but that means it’s still successful.
+			return false !== self::clear_cache_timber_database();
 		} else if ( self::CACHE_OBJECT === $cache_mode && $object_cache ) {
-			return self::clear_cache_timber_object();
+			return false !== self::clear_cache_timber_object();
 		}
 		return false;
 	}
 
 	protected static function clear_cache_timber_database() {
 		global $wpdb;
-		$query = $wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name LIKE '%s'", '_transient_timberloader_%');
+		$query = $wpdb->prepare(
+			"DELETE FROM $wpdb->options WHERE option_name LIKE '%s'",
+			'_transient%timberloader_%'
+		);
 		return $wpdb->query($query);
 	}
 
@@ -229,6 +250,8 @@ class Loader {
 	}
 
 	/**
+	 * Remove a directory and everything inside
+	 *
 	 * @param string|false $dirPath
 	 */
 	public static function rrmdir( $dirPath ) {
@@ -250,15 +273,15 @@ class Loader {
 	}
 
 	/**
-	 * @return \Asm89\Twig\CacheExtension\Extension
+	 * @return \Twig\CacheExtension\Extension
 	 */
 	private function _get_cache_extension() {
 
 		$key_generator   = new \Timber\Cache\KeyGenerator();
 		$cache_provider  = new \Timber\Cache\WPObjectCacheAdapter($this);
 		$cache_lifetime  = apply_filters('timber/cache/extension/lifetime', 0);
-		$cache_strategy  = new \Asm89\Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy($cache_provider, $key_generator, $cache_lifetime);
-		$cache_extension = new \Asm89\Twig\CacheExtension\Extension($cache_strategy);
+		$cache_strategy  = new \Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy($cache_provider, $key_generator, $cache_lifetime);
+		$cache_extension = new \Twig\CacheExtension\Extension($cache_strategy);
 
 		return $cache_extension;
 	}

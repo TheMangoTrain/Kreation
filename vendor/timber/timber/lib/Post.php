@@ -80,9 +80,9 @@ class Post extends Core implements CoreInterface {
 
 	/**
 	 * @internal
-	 * @var string $_content stores the processed content internally
+	 * @var string $___content stores the processed content internally
 	 */
-	protected $_content;
+	protected $___content;
 
 	/**
 	 * @var string $_permalink the returned permalink from WP's get_permalink function
@@ -225,7 +225,7 @@ class Post extends Core implements CoreInterface {
 	 * tries to figure out what post you want to get if not explictly defined (or if it is, allows it to be passed through)
 	 * @internal
 	 * @param mixed a value to test against
-	 * @return int the numberic id we should be using for this post object
+	 * @return int|null the numberic id we should be using for this post object, null when there's no ID (ex: 404 page)
 	 */
 	protected function determine_id( $pid ) {
 		global $wp_query;
@@ -646,7 +646,7 @@ class Post extends Core implements CoreInterface {
 	 * {% for post in job %}
 	 *     <div class="job">
 	 *         <h2>{{ post.title }}</h2>
-	 *         <p>{{ post.terms('category')|join(', ') }}</p>
+	 *         <p>{{ post.terms( {query:{taxonomy:'category', orderby:'name', order: 'ASC'}} )|join(', ') }}</p>
 	 *     </div>
 	 * {% endfor %}
 	 * </section>
@@ -655,7 +655,7 @@ class Post extends Core implements CoreInterface {
 	 * <section id="job-feed">
 	 *     <div class="job">
 	 *         <h2>Cheese Maker</h2>
-	 *         <p>Food, Cheese, Fromage</p>
+	 *         <p>Cheese, Food, Fromage</p>
 	 *     </div>
 	 *     <div class="job">
 	 *         <h2>Mime</h2>
@@ -1210,8 +1210,8 @@ class Post extends Core implements CoreInterface {
 		if ( $form = $this->maybe_show_password_form() ) {
 			return $form;
 		}
-		if ( $len == -1 && $page == 0 && $this->_content ) {
-			return $this->_content;
+		if ( $len == -1 && $page == 0 && $this->___content ) {
+			return $this->___content;
 		}
 		$content = $this->post_content;
 		if ( $len > 0 ) {
@@ -1224,9 +1224,26 @@ class Post extends Core implements CoreInterface {
 				$content = $contents[$page];
 			}
 		}
+		$content = $this->content_handle_no_teaser_block( $content );
 		$content = apply_filters('the_content', ($content));
 		if ( $len == -1 && $page == 0 ) {
-			$this->_content = $content;
+			$this->___content = $content;
+		}
+		return $content;
+	}
+
+	/**
+	 * Handles for an circumstance with the Block editor where a "more" block has an option to
+	 * "Hide the excerpt on the full content page" which hides everything prior to the inserted
+	 * "more" block
+	 * @ticket #2218
+	 * @param string $content
+	 * @return string
+	 */
+	protected function content_handle_no_teaser_block( $content ) {
+		if ( (strpos($content, 'noTeaser:true') !== false || strpos($content, '"noTeaser":true') !== false) && strpos($content, '<!-- /wp:more -->') !== false) {
+			$arr = explode('<!-- /wp:more -->', $content);
+			return trim($arr[1]);
 		}
 		return $content;
 	}
@@ -1259,8 +1276,8 @@ class Post extends Core implements CoreInterface {
 	 */
 	public function date( $date_format = '' ) {
 		$df = $date_format ? $date_format : get_option('date_format');
-		$the_date = (string) mysql2date($df, $this->post_date);
-		return apply_filters('get_the_date', $the_date, $df);
+		$the_date = date_i18n($df, strtotime($this->post_date));
+		return apply_filters('get_the_date', $the_date, $df, $this->id);
 	}
 
 	/**
@@ -1283,8 +1300,8 @@ class Post extends Core implements CoreInterface {
 	 */
 	public function time( $time_format = '' ) {
 		$tf = $time_format ? $time_format : get_option('time_format');
-		$the_time = (string) mysql2date($tf, $this->post_date);
-		return apply_filters('get_the_time', $the_time, $tf);
+		$the_time = date_i18n($tf, strtotime($this->post_date));
+		return apply_filters('get_the_time', $the_time, $tf, $this->id);
 	}
 
 
@@ -1383,7 +1400,7 @@ class Post extends Core implements CoreInterface {
 	public function modified_date( $date_format = '' ) {
 		$df = $date_format ? $date_format : get_option('date_format');
 		$the_time = $this->get_modified_time($df);
-		return apply_filters('get_the_modified_date', $the_time, $date_format);
+		return apply_filters('get_the_modified_date', $the_time, $date_format, get_post($this->id));
 	}
 
 	/**
@@ -1553,7 +1570,7 @@ class Post extends Core implements CoreInterface {
 	 * ```twig
 	 * <img src="{{ post.thumbnail.src }}" />
 	 * ```
-	 * @return Timber\Image|null of your thumbnail
+	 * @return Image|null of your thumbnail
 	 */
 	public function thumbnail() {
 		$tid = get_post_thumbnail_id($this->ID);
@@ -1810,7 +1827,7 @@ class Post extends Core implements CoreInterface {
 	public function get_modified_time( $time_format = '' ) {
 		$tf = $time_format ? $time_format : get_option('time_format');
 		$the_time = get_post_modified_time($tf, false, $this->ID, true);
-		return apply_filters('get_the_modified_time', $the_time, $time_format);
+		return apply_filters('get_the_modified_time', $the_time, $time_format, get_post($this->id));
 	}
 
 	/**
