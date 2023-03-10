@@ -12,15 +12,15 @@
           <div class="page-controls">
 
             {% if post.next %}
-                <a href="{{ post.next.link }}" style="flex: 1;">Prev<h5 class="title">{{ post.next.title }}</h5></a>
+                <a href="{{ post.next.link }}">Prev<h5 class="title">{{ post.next.title }}</h5></a>
             {% else %}
-                <div style="flex: 1;"> </div>
+                <div> </div>
             {% endif %}
 
             {% include 'partials/work-home.twig' %}
 
             {% if post.prev %}
-                <a href="{{ post.prev.link }}" style="text-align: right;flex: 1;">Next<h5 class="title">{{ post.prev.title }}</h5></a>
+                <a href="{{ post.prev.link }}" style="text-align: right;">Next<h5 class="title">{{ post.prev.title }}</h5></a>
             {% else %}
                 <div> </div>
             {% endif %}
@@ -57,7 +57,7 @@
             {% if post.next %}
                 <a href="{{ post.next.link }}">Prev<h5 class="title">{{ post.next.title }}</h5></a>
             {% else %}
-                <div style="flex: 1;"> </div>
+                <div> </div>
             {% endif %}
 
             {% include 'partials/work-home.twig' %}

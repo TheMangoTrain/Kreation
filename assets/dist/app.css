@@ -368,11 +368,11 @@ nav {
     letter-spacing: 4px;
     padding-top: 2em;
     /*
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    */
     text-align: center;
     padding-bottom: 2em;
     max-width: 600px;
@@ -391,15 +391,14 @@ nav {
 
 .single-project main .page-controls {
     width: 100%;
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .single-project main .page-controls a {
     text-decoration: none;
 }
-
 
 .single-project main .page-controls a h5 {
     font-weight: normal;
@@ -587,15 +586,22 @@ flex-wrap: wrap;
     bottom: 0;
 }
 
-.hero-photo img {
-    max-width: 300px;
-    border-radius: 50%;
+.hero-photo .imageWrapper {
     position: relative;
     border: 8px solid white;
     z-index: 2;
+    box-sizing: border-box;
+    width: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 300px;
+    margin: 0 auto;
+}
+
+.hero-photo img {
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
+    object-fit: cover;
 }
 
 #home-hero-message {
@@ -734,7 +740,7 @@ main {
     padding: 0;
 }
 
-#work-home .section-inner>a {
+#work-home .section-inner > a {
     flex: 1 1 300px;
     display: inherit;
     background-color: #003c5e;
@@ -747,9 +753,13 @@ main {
     align-items: center;
     text-align: center;
     max-width: 333px;
+    margin: 0.5em;
+    border-radius: 12px;
+    overflow: auto;
+    filter: drop-shadow(0px 0px 10px #bfbfbf);
 }
 
-#work-home .section-inner>a h2 {
+#work-home .section-inner > a h2 {
     padding: 1em;
     height: 100%;
     display: flex;
@@ -760,6 +770,8 @@ main {
 
 #work-home img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 #work-home .details {

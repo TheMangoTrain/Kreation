@@ -1,34 +1,34 @@
 {% extends 'layouts/base.twig' %}
 {% block content %}
 
-  <section id="work-home" class="widthFull container">
+    <section id="work-home" class="widthFull container">
 
-    <div class="section-inner widthGlobal">
+        <div class="section-inner widthGlobal">
 
-      {% for item in projects %}
-          <a href="{{ item.link }}" aria-label="{{ item.title }}">
+            {% for item in projects %}
+                <a href="{{ item.link }}" aria-label="{{ item.title }}">
 
-            {% if item.thumbnail %}
-              <img onload="fadeIn(this)" class="fade" src="{{ item.thumbnail.src('medium') }}" srcset="{{ item.thumbnail.srcset }}" sizes="{{ item.thumbnail.img_sizes }}" alt="{{ item.thumbnail.alt }}" />
-            {% else %}
-              <h2>{{ item.title }}</h2>
-            {% endif %}
+                    {% if item.thumbnail %}
+                        <img onload="fadeIn(this)" class="fade" src="{{ item.thumbnail.src('medium') }}" srcset="{{ item.thumbnail.srcset }}" sizes="{{ item.thumbnail.img_sizes }}" alt="{{ item.thumbnail.alt }}" />
+                    {% else %}
+                        <h2>{{ item.title }}</h2>
+                    {% endif %}
 
-            <div class="details">                         
-              <div class="title">{{ item.title }}</div>
-              
-              <div class="tags">              
-                {% filter shortcodes %}
-                  [tags postid="{{item.id}}"]
-                {% endfilter %}
-              </div>
-            </div>
+                    <div class="details">
+                        <div class="title">{{ item.title }}</div>
+                        
+                        <div class="tags">
+                            {% filter shortcodes %}
+                                [tags postid="{{item.id}}"]
+                            {% endfilter %}
+                        </div>
+                    </div>
 
-          </a>
-     {% endfor %}
+                </a>
+            {% endfor %}
 
-    </div>
+        </div>
 
-  </section>
+    </section>
 
 {% endblock %}
