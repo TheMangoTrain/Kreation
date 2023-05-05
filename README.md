@@ -3,7 +3,7 @@ Kal's portfolio website
 
 [Kreation.ca](https://kreation.ca)
 
-Primarily built upon WordPress.
+WordPress theme from scratch
 
 Featuring:
 * Custom responsive MVC theme using Timber/Twig
